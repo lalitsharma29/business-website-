@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="p:domain_verify" content="7174b8c8a4807036d26d1fd3c2939729" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Login – Mohan Mehandi Art</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* =========================================================
+       BASE
+    ========================================================= */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a0508 0%, #2C0A13 55%, #0d0205 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* =========================================================
+       BRAND
+    ========================================================= */
+    .login-logo {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .login-logo .brand-name {
+      font-family: 'Dancing Script', cursive;
+      color: var(--gold, #c9a84c);
+      font-size: clamp(2.2rem, 7vw, 3.2rem);
+      font-weight: 700;
+      display: block;
+      text-shadow: 0 0 30px rgba(201, 168, 76, 0.45);
+    }
+
+    .login-logo .sub {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .login-logo .ornament {
+      color: var(--gold, #c9a84c);
+      font-size: 1.2rem;
+      display: block;
+      margin: 6px 0;
+    }
+
+    /* =========================================================
+       ROLE SELECTOR
+    ========================================================= */
+    .role-label {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .role-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .role-card {
+      border: 2px solid rgba(201, 168, 76, 0.25);
+      border-radius: var(--radius-lg, 14px);
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .role-card:hover {
+      border-color: var(--gold, #c9a84c);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .role-card.selected {
+      border-color: var(--gold, #c9a84c);
+      background: rgba(201, 168, 76, 0.15);
+      box-shadow: 0 0 22px rgba(201, 168, 76, 0.2);
+    }
+
+    .role-card .role-emoji {
+      font-size: 2.2rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .role-card .role-name {
+      color: var(--gold, #c9a84c);
+      font-size: 1rem;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .role-card .role-desc {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.72rem;
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       CARD
+    ========================================================= */
+    .login-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: var(--radius-lg, 14px);
+      padding: 32px;
+    }
+
+    /* =========================================================
+       SECURITY BADGE (admin)
+    ========================================================= */
+    .host-panel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--gold, #c9a84c);
+      color: var(--gold, #c9a84c);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      margin-bottom: 6px;
+    }
+
+    .security-info {
+      background: rgba(201, 168, 76, 0.07);
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-radius: 10px;
+      padding: 11px 14px;
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.76rem;
+      line-height: 1.7;
+    }
+
+    .security-info strong {
+      color: var(--gold, #c9a84c);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .security-info .shield-icons {
+      font-size: 1rem;
+      margin-right: 4px;
+    }
+
+    /* =========================================================
+       FORM GROUPS
+    ========================================================= */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 7px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .form-group label .req {
+      color: #e05c7a;
+      margin-left: 3px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(201, 168, 76, 0.6);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1.5px solid rgba(201, 168, 76, 0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      padding: 12px 14px 12px 40px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .input-wrap input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .input-wrap input:focus {
+      border-color: var(--gold, #c9a84c);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+    }
+
+    .input-wrap input.error-field {
+      border-color: #e05c7a !important;
+    }
+
+    /* toggle eye */
+    .toggle-eye {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 0.88rem;
+      transition: color 0.2s;
+    }
+
+    .toggle-eye:hover {
+      color: var(--gold, #c9a84c);
+    }
+
+    /* =========================================================
+       CAPTCHA
+    ========================================================= */
+    .captcha-section {
+      margin-bottom: 20px;
+    }
+
+    .captcha-section label {
+      display: block;
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 9px;
+      font-weight: 600;
+    }
+
+    .captcha-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .captcha-box {
+      background: linear-gradient(135deg, rgba(201, 168, 76, 0.15), rgba(201, 168, 76, 0.05));
+      border: 1.5px dashed rgba(201, 168, 76, 0.5);
+      border-radius: 10px;
+      padding: 11px 22px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #f0c75a;
+      letter-spacing: 3px;
+      font-family: 'Courier New', monospace;
+      white-space: nowrap;
+      min-width: 120px;
+      text-align: center;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .captcha-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(45deg,
+          transparent,
+          transparent 4px,
+          rgba(201, 168, 76, 0.04) 4px,
+          rgba(201, 168, 76, 0.04) 8px);
+      pointer-events: none;
+    }
+
+    .captcha-refresh {
+      background: none;
+      border: 1.5px solid rgba(201, 168, 76, 0.45);
+      border-radius: 8px;
+      color: var(--gold, #c9a84c);
+      cursor: pointer;
+      padding: 9px 13px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .captcha-refresh:hover {
+      background: rgba(201, 168, 76, 0.1);
+      border-color: var(--gold, #c9a84c);
+    }
+
+    .captcha-answer {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1.5px solid rgba(201, 168, 76, 0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .captcha-answer::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .captcha-answer:focus {
+      border-color: var(--gold, #c9a84c);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+    }
+
+    .captcha-answer.error-field {
+      border-color: #e05c7a !important;
+    }
+
+    /* =========================================================
+       LOCKOUT BANNER
+    ========================================================= */
+    .lockout-banner {
+      display: none;
+      background: rgba(224, 92, 122, 0.12);
+      border: 1.5px solid rgba(224, 92, 122, 0.5);
+      border-radius: 10px;
+      padding: 13px 16px;
+      margin-bottom: 18px;
+      color: #f79ab0;
+      font-size: 0.82rem;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .lockout-banner.visible {
+      display: block;
+    }
+
+    .lockout-banner strong {
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 3px;
+    }
+
+    #lockCountdown {
+      font-weight: 700;
+      color: #ff8fa3;
+    }
+
+    /* =========================================================
+       ATTEMPT COUNTER
+    ========================================================= */
+    .attempt-dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .attempt-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s;
+    }
+
+    .attempt-dot.used {
+      background: #e05c7a;
+      border-color: #e05c7a;
+    }
+
+    .attempt-dot.safe {
+      background: rgba(201, 168, 76, 0.4);
+      border-color: var(--gold, #c9a84c);
+    }
+
+    /* =========================================================
+       SUBMIT BUTTON
+    ========================================================= */
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, var(--gold, #c9a84c), #a87c28);
+      color: #1a0508;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-login:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(201, 168, 76, 0.35);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* TAB switcher (public) */
+    .tab-switcher {
+      display: flex;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 25px;
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 9px;
+      border-radius: 20px;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.55);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--gold, #c9a84c);
+      color: #1a0508;
+    }
+
+    /* Visitor form inputs inherit same styles */
+    .login-card .form-group input {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1.5px solid rgba(201, 168, 76, 0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      padding: 12px 14px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .login-card .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .login-card .form-group input:focus {
+      border-color: var(--gold, #c9a84c);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+    }
+
+    /* Visitor submit btn */
+    .btn-visitor {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #7a1e35, #c0304e);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-visitor:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(192, 48, 78, 0.35);
+    }
+
+    .btn-visitor:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* Back link */
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-link a {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-link a:hover {
+      color: var(--gold, #c9a84c);
+    }
+
+    /* Shake animation on wrong */
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-7px);
+      }
+
+      40% {
+        transform: translateX(7px);
+      }
+
+      60% {
+        transform: translateX(-5px);
+      }
+
+      80% {
+        transform: translateX(5px);
+      }
+    }
+
+    .shake {
+      animation: shake 0.45s ease-in-out;
+    }
+
+    /* Pulse on captcha refresh */
+    @keyframes pulse-gold {
+      0% {
+        box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.5);
+      }
+
+      70% {
+        box-shadow: 0 0 0 8px rgba(201, 168, 76, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(201, 168, 76, 0);
+      }
+    }
+
+    .captcha-pulse {
+      animation: pulse-gold 0.5s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+
+    <!-- BRAND -->
+    <div class="login-logo">
+      <span class="brand-name">Mohan Mehandi Art</span>
+      <span class="ornament">✦ ❀ ✦</span>
+      <span class="sub">Mehndi Artist • Faridabad</span>
+    </div>
+
+    <!-- ROLE SELECTOR -->
+    <div class="role-label">Choose your login type</div>
+    <div class="role-selector" id="roleSelector">
+      <div class="role-card selected" id="hostCard" onclick="selectRole('host')">
+        <span class="role-emoji">👑</span>
+        <span class="role-name">Host / Owner</span>
+        <span class="role-desc">Manage designs, images, prices &amp; bookings</span>
+      </div>
+      <div class="role-card" id="publicCard" onclick="selectRole('public')">
+        <span class="role-emoji">🌸</span>
+        <span class="role-name">Public / Visitor</span>
+        <span class="role-desc">Browse catalog, view designs &amp; book mehndi</span>
+      </div>
+    </div>
+
+    <div class="login-card">
+
+      <!-- ===================== HOST / ADMIN PANEL ===================== -->
+      <div id="hostPanel">
+        <div class="host-panel-badge"><i class="fas fa-shield-halved"></i> Secure Admin Login</div>
+
+        <!-- Security info -->
+
+        <!-- Lockout banner -->
+        <div class="lockout-banner" id="lockoutBanner">
+          <strong>🚫 Access Temporarily Locked</strong>
+          Too many failed attempts. Please wait <span id="lockCountdown">30</span>s before trying again.
+        </div>
+
+        <!-- Attempt dots -->
+        <div class="attempt-dots" id="attemptDots">
+          <div class="attempt-dot safe" id="dot1"></div>
+          <div class="attempt-dot safe" id="dot2"></div>
+          <div class="attempt-dot safe" id="dot3"></div>
+        </div>
+
+        <form id="hostForm" onsubmit="doHostLogin(event)" novalidate autocomplete="off">
+
+          <!-- Email / Mobile -->
+          <div class="form-group">
+            <label for="hIdentifier">Email or Mobile Number <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-user-shield input-icon"></i>
+              <input type="text" id="hIdentifier" name="hIdentifier" required autocomplete="off"
+                placeholder="Registered email or 10-digit mobile" inputmode="email" />
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="hPass">Password <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="hPass" name="hPass" required autocomplete="new-password"
+                placeholder="Enter admin password" />
+              <i class="fas fa-eye toggle-eye" id="eyeToggle" onclick="toggleEye()" title="Show/Hide"></i>
+            </div>
+          </div>
+
+          <!-- CAPTCHA -->
+          <div class="captcha-section">
+            <label><i class="fas fa-robot" style="margin-right:5px;color:rgba(201,168,76,0.7);"></i>Verify you're human
+              — solve the math <span class="req">*</span></label>
+            <div class="captcha-row">
+              <div class="captcha-box" id="captchaQuestion">…</div>
+              <button type="button" class="captcha-refresh" id="captchaRefreshBtn" onclick="refreshCaptcha()"
+                title="New question">
+                <i class="fas fa-rotate-right"></i>
+              </button>
+              <input type="text" class="captcha-answer" id="captchaInput" placeholder="= ?" maxlength="5"
+                inputmode="numeric" autocomplete="off" required />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-login" id="hostSubmitBtn">
+            <i class="fas fa-crown"></i> Login as Admin
+          </button>
+        </form>
+      </div><!-- end #hostPanel -->
+
+      <!-- ===================== PUBLIC / VISITOR PANEL ===================== -->
+      <div id="publicPanel" style="display:none;">
+        <div class="tab-switcher">
+          <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">Login</button>
+          <button class="tab-btn" id="signupTab" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+
+        <!-- Visitor Login -->
+        <div id="loginPanel">
+          <form onsubmit="doVisitorLogin(event)">
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="text" id="vUser" required placeholder="Your registered phone number" />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="vPass" required placeholder="Your password" />
+            </div>
+            <button type="submit" class="btn-visitor">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+          </form>
+          <p style="text-align:center;margin-top:16px;font-size:0.8rem;color:rgba(255,255,255,0.4);">
+            No account? <a href="#" onclick="switchTab('signup')" style="color:var(--gold,#c9a84c);">Sign up free</a>
+          </p>
+        </div>
+
+        <!-- Visitor Signup -->
+        <div id="signupPanel" style="display:none;">
+          <form onsubmit="doSignup(event)">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="sName" required placeholder="Your full name" />
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="sPhone" required placeholder="10-digit mobile number" pattern="[0-9]{10}" />
+            </div>
+            <div class="form-group">
+              <label>Create Password</label>
+              <input type="password" id="sPass" required placeholder="Min. 6 characters" minlength="6" />
+            </div>
+            <button type="submit" class="btn-visitor">
+              <i class="fas fa-user-plus"></i> Create Account
+            </button>
+          </form>
+          <p style="text-align:center;margin-top:16px;font-size:0.8rem;color:rgba(255,255,255,0.4);">
+            Have an account? <a href="#" onclick="switchTab('login')" style="color:var(--gold,#c9a84c);">Login</a>
+          </p>
+        </div>
+      </div><!-- end #publicPanel -->
+
+    </div><!-- end .login-card -->
+
+    <div class="back-link"><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></div>
+  </div><!-- end .login-container -->
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    /* =================================================================
+       CONSTANTS — Admin credentials (never expose in production server!)
+    ================================================================= */
+    const ADMIN_ALLOWED_IDS = ['mohan.mehandiart15@gmail.com', '9818246792'];
+    const ADMIN_PASSWORD = 'mohan@123';
+    const MAX_ATTEMPTS = 3;
+    const LOCKOUT_SECONDS = 30;
+
+    /* =================================================================
+       CAPTCHA ENGINE
+    ================================================================= */
+    let captchaAnswer = 0;
+
+    function refreshCaptcha() {
+      const ops = ['+', '-', '×'];
+      const op = ops[Math.floor(Math.random() * ops.length)];
+      let a, b, result;
+
+      if (op === '+') {
+        a = rnd(5, 30); b = rnd(3, 20); result = a + b;
+      } else if (op === '-') {
+        a = rnd(15, 40); b = rnd(2, a); result = a - b;
+      } else {
+        a = rnd(2, 9); b = rnd(2, 9); result = a * b;
+      }
+
+      captchaAnswer = result;
+      const box = document.getElementById('captchaQuestion');
+      box.textContent = `${a}  ${op}  ${b}  =  ?`;
+
+      // pulse animation
+      box.classList.remove('captcha-pulse');
+      void box.offsetWidth; // reflow
+      box.classList.add('captcha-pulse');
+
+      // clear previous answer
+      const inp = document.getElementById('captchaInput');
+      if (inp) { inp.value = ''; inp.classList.remove('error-field'); }
+    }
+
+    function rnd(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    /* =================================================================
+       ROLE SWITCHER
+    ================================================================= */
+    let currentRole = 'host';
+
+    function selectRole(role) {
+      currentRole = role;
+      document.getElementById('hostCard').classList.toggle('selected', role === 'host');
+      document.getElementById('publicCard').classList.toggle('selected', role === 'public');
+      document.getElementById('hostPanel').style.display = role === 'host' ? 'block' : 'none';
+      document.getElementById('publicPanel').style.display = role === 'public' ? 'block' : 'none';
+    }
+
+    function switchTab(tab) {
+      document.getElementById('loginPanel').style.display = tab === 'login' ? 'block' : 'none';
+      document.getElementById('signupPanel').style.display = tab === 'signup' ? 'block' : 'none';
+      document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+      document.getElementById('signupTab').classList.toggle('active', tab === 'signup');
+    }
+
+    /* =================================================================
+       PASSWORD SHOW / HIDE
+    ================================================================= */
+    function toggleEye() {
+      const inp = document.getElementById('hPass');
+      const icon = document.getElementById('eyeToggle');
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      icon.className = show ? 'fas fa-eye-slash toggle-eye' : 'fas fa-eye toggle-eye';
+    }
+
+    /* =================================================================
+       LOCKOUT STATE
+    ================================================================= */
+    let failedAttempts = 0;
+    let lockedUntil = 0;
+    let countdownTimer = null;
+
+    function isLocked() {
+      return Date.now() < lockedUntil;
+    }
+
+    function triggerLockout() {
+      lockedUntil = Date.now() + LOCKOUT_SECONDS * 1000;
+      showLockBanner();
+    }
+
+    function showLockBanner() {
+      const banner = document.getElementById('lockoutBanner');
+      const btn = document.getElementById('hostSubmitBtn');
+      banner.classList.add('visible');
+      if (btn) btn.disabled = true;
+
+      clearInterval(countdownTimer);
+      countdownTimer = setInterval(() => {
+        const remaining = Math.ceil((lockedUntil - Date.now()) / 1000);
+        const el = document.getElementById('lockCountdown');
+        if (el) el.textContent = remaining;
+        if (remaining <= 0) {
+          clearInterval(countdownTimer);
+          banner.classList.remove('visible');
+          if (btn) btn.disabled = false;
+          failedAttempts = 0;
+          updateDots();
+          refreshCaptcha();
+        }
+      }, 500);
+    }
+
+    function updateDots() {
+      for (let i = 1; i <= MAX_ATTEMPTS; i++) {
+        const dot = document.getElementById('dot' + i);
+        if (!dot) continue;
+        dot.className = 'attempt-dot';
+        if (i <= failedAttempts) dot.classList.add('used');
+        else dot.classList.add('safe');
+      }
+    }
+
+    /* =================================================================
+       ADMIN LOGIN HANDLER
+    ================================================================= */
+    function doHostLogin(e) {
+      e.preventDefault();
+
+      // ── Lockout guard ──
+      if (isLocked()) { showLockBanner(); return; }
+
+      const identifier = document.getElementById('hIdentifier').value.trim();
+      const pass = document.getElementById('hPass').value;
+      const captchaVal = document.getElementById('captchaInput').value.trim();
+      const form = document.getElementById('hostForm');
+
+      let valid = true;
+
+      // ── 1. Identifier check ──
+      const idField = document.getElementById('hIdentifier');
+      if (!identifier) {
+        idField.classList.add('error-field');
+        valid = false;
+      } else {
+        idField.classList.remove('error-field');
+      }
+
+      // ── 2. Password check ──
+      const passField = document.getElementById('hPass');
+      if (!pass) {
+        passField.classList.add('error-field');
+        valid = false;
+      } else {
+        passField.classList.remove('error-field');
+      }
+
+      // ── 3. CAPTCHA check ──
+      const capField = document.getElementById('captchaInput');
+      if (!captchaVal || parseInt(captchaVal, 10) !== captchaAnswer) {
+        capField.classList.add('error-field');
+        valid = false;
+      } else {
+        capField.classList.remove('error-field');
+      }
+
+      if (!valid) {
+        shakeForm(form);
+        if (captchaVal && parseInt(captchaVal, 10) !== captchaAnswer) {
+          typeof showToast === 'function'
+            ? showToast('CAPTCHA answer is incorrect. Please try again.', 'error')
+            : alert('CAPTCHA answer is incorrect.');
+        } else {
+          typeof showToast === 'function'
+            ? showToast('Please fill all fields correctly.', 'error')
+            : alert('Please fill all fields correctly.');
+        }
+        refreshCaptcha();
+        return;
+      }
+
+      // ── 4. Credential validation ──
+      const idOk = ADMIN_ALLOWED_IDS.includes(identifier);
+      const passOk = pass === ADMIN_PASSWORD;
+
+      if (idOk && passOk) {
+        // ✅ SUCCESS
+        failedAttempts = 0;
+        updateDots();
+
+        // Generate a simple session token
+        const token = btoa(Date.now() + ':' + Math.random().toString(36).slice(2));
+        const userData = {
+          role: 'admin',
+          name: 'Mohan (Host)',
+          identifier: identifier,
+          token: token,
+          loginTime: Date.now()
+        };
+
+        lsSet('mma_user', userData);
+        // Store token as plain string (NOT via lsSet) so getItem reads it back correctly
+        localStorage.setItem('mma_admin_token', token);
+
+        typeof showToast === 'function'
+          ? showToast('Welcome back, Mohan ji! 👑 Redirecting…', 'success')
+          : alert('Welcome back, Mohan ji!');
+
+        const btn = document.getElementById('hostSubmitBtn');
+        if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting…'; }
+
+        setTimeout(() => window.location.href = 'admin.html', 1000);
+
+      } else {
+        // ❌ FAILURE
+        failedAttempts++;
+        updateDots();
+        shakeForm(form);
+        refreshCaptcha();
+
+        const remaining = MAX_ATTEMPTS - failedAttempts;
+
+        if (failedAttempts >= MAX_ATTEMPTS) {
+          triggerLockout();
+          typeof showToast === 'function'
+            ? showToast('Too many failed attempts! Form locked for 30 seconds.', 'error')
+            : alert('Too many failed attempts!');
+        } else {
+          typeof showToast === 'function'
+            ? showToast(`Incorrect credentials. ${remaining} attempt${remaining > 1 ? 's' : ''} remaining.`, 'error')
+            : alert(`Incorrect credentials. ${remaining} attempt(s) remaining.`);
+        }
+      }
+    }
+
+    /* =================================================================
+       SHAKE HELPER
+    ================================================================= */
+    function shakeForm(el) {
+      if (!el) return;
+      el.classList.remove('shake');
+      void el.offsetWidth;
+      el.classList.add('shake');
+      setTimeout(() => el.classList.remove('shake'), 500);
+    }
+
+    /* =================================================================
+       VISITOR LOGIN
+    ================================================================= */
+    function doVisitorLogin(e) {
+      e.preventDefault();
+      const phone = document.getElementById('vUser').value.trim();
+      const pass = document.getElementById('vPass').value;
+      const users = lsGet('mma_users', []);
+      const found = users.find(u => u.phone === phone && u.password === pass);
+      if (found) {
+        lsSet('mma_user', { role: 'visitor', name: found.name, phone: found.phone });
+        typeof showToast === 'function'
+          ? showToast(`Welcome, ${found.name}! 🌸`, 'success')
+          : alert(`Welcome, ${found.name}!`);
+        setTimeout(() => window.location.href = 'gallery.html', 900);
+      } else {
+        typeof showToast === 'function'
+          ? showToast('Phone or password incorrect.', 'error')
+          : alert('Phone or password incorrect.');
+      }
+    }
+
+    /* =================================================================
+       INIT
+    ================================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      // Auto-redirect if already logged in
+      const u = getCurrentUser();
+      if (u) {
+        if (u.role === 'admin') window.location.href = 'admin.html';
+        else window.location.href = 'gallery.html';
+        return;
+      }
+      // Generate first CAPTCHA
+      refreshCaptcha();
+    });
+  </script>
+</body>
+
+</html>

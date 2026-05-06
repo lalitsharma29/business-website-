@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="p:domain_verify" content="7174b8c8a4807036d26d1fd3c2939729"/>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Mehndi – Mohan Mehandi Art | Online Booking Faridabad</title>
+  <meta name="description" content="Book mehndi services online from Mohan Mehandi Art. Fill the form to book bridal, party or festival mehndi in Faridabad. Quick confirmation!" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .booking-layout { display:grid; grid-template-columns:1.5fr 1fr; gap:48px; align-items:start; }
+    .booking-form-card { background:var(--white); border-radius:var(--radius-lg); padding:40px; box-shadow:var(--shadow); }
+    .booking-form-card h2 { font-size:1.8rem; color:var(--maroon-dark); margin-bottom:6px; }
+    .booking-form-card p { color:var(--text-light); font-size:0.87rem; margin-bottom:28px; }
+    .booking-sidebar { display: flex; flex-direction: column; gap: 0; }
+    .sidebar-card { background:var(--white); border-radius:var(--radius-lg); padding:28px; box-shadow:var(--shadow); margin-bottom:20px; }
+    .sidebar-card h3 { color:var(--maroon-dark); font-size:1.1rem; margin-bottom:14px; }
+    .contact-method { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--cream-dark); text-decoration:none; color:inherit; transition:var(--transition); }
+    .contact-method:last-child { border:none; }
+    .contact-method:hover { color:var(--maroon); }
+    .cm-icon { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .cm-icon.call { background:rgba(123,28,46,0.1); color:var(--maroon); }
+    .cm-icon.wa { background:rgba(37,211,102,0.12); color:#25D366; }
+    .cm-info span { display:block; font-size:0.75rem; color:var(--text-light); }
+    .cm-info strong { font-size:0.95rem; color:var(--text-dark); }
+    .booking-success { display:none; text-align:center; padding:40px 20px; }
+    .booking-success .success-icon { font-size:4rem; margin-bottom:16px; }
+    .booking-success h3 { color:var(--maroon-dark); font-size:1.6rem; margin-bottom:10px; }
+    .booking-success p { color:var(--text-light); margin-bottom:24px; }
+    @media(max-width:900px){ .booking-layout{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo"><img src="assets/images/mohan_ji_real.jpg" alt="Logo" /><div class="nav-logo-text"><span>Mohan Mehandi</span><span>Mehndi Artist • Faridabad</span></div></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+    <li><a href="gallery.html">Gallery</a></li><li><a href="catalog.html">Catalog</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="contact.html">Contact</a></li><li><a href="booking.html" class="nav-cta active">Book Now</a></li>
+    <li><a href="login.html" id="loginNavBtn"><i class="fa fa-user"></i> Login</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Book Now</span></div>
+    <h1>Book Your <span style="color:var(--gold)">Appointment</span></h1>
+    <p>Fill the form below and we'll confirm within a few hours</p>
+  </div>
+</div>
+
+<section class="section" style="background:var(--cream);">
+  <div class="container">
+    <div class="booking-layout">
+      <!-- FORM -->
+      <div class="booking-form-card">
+        <h2>Booking Request</h2>
+        <p>All fields marked * are required. We'll call to confirm your appointment.</p>
+        <div id="bookingFormWrap">
+          <form id="bookingForm" onsubmit="submitBooking(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="bName">Full Name *</label>
+                <input type="text" id="bName" required placeholder="Your name" />
+              </div>
+              <div class="form-group">
+                <label for="bPhone">Phone Number *</label>
+                <input type="tel" id="bPhone" required placeholder="10-digit mobile" pattern="[0-9]{10}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="bService">Service Type *</label>
+              <select id="bService" required>
+                <option value="">Select service</option>
+                <option value="Bridal Mehndi">Bridal Mehndi</option>
+                <option value="Arabic Mehndi">Arabic Mehndi</option>
+                <option value="Party Mehndi">Party Mehndi</option>
+                <option value="Festival Mehndi">Festival Mehndi</option>
+                <option value="Simple Mehndi">Simple Mehndi</option>
+                <option value="Group / Event Mehndi">Group / Event Mehndi</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="bDesign">Design Reference (Optional)</label>
+              <input type="text" id="bDesign" placeholder="Design # from gallery or describe your preference" />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="bDate">Preferred Date *</label>
+                <input type="date" id="bDate" required />
+              </div>
+              <div class="form-group">
+                <label for="bTime">Preferred Time *</label>
+                <select id="bTime" required>
+                  <option value="">Select time</option>
+                  <option>Morning (9AM – 11AM)</option>
+                  <option>Afternoon (11AM – 2PM)</option>
+                  <option>Evening (4PM – 7PM)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="bAddress">Address / Venue *</label>
+              <textarea id="bAddress" required placeholder="Full address where service is required…"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="bNote">Special Notes</label>
+              <textarea id="bNote" placeholder="Any special requirements, guest count, etc." style="min-height:70px;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;font-size:1rem;">
+              <i class="fas fa-calendar-check"></i> Submit Booking Request
+            </button>
+          </form>
+        </div>
+        <div class="booking-success" id="bookingSuccess">
+          <div class="success-icon">🎉</div>
+          <h3>Booking Request Sent!</h3>
+          <p>Thank you! We've received your booking request. Mohan ji will call you on <strong id="successPhone"></strong> to confirm within a few hours.</p>
+          <a href="https://wa.me/919818246792" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Also WhatsApp Us</a>
+          <br/><br/>
+          <a href="gallery.html" class="btn btn-secondary btn-sm">Browse More Designs</a>
+        </div>
+      </div>
+      <!-- SIDEBAR -->
+      <div class="booking-sidebar">
+        <div class="sidebar-card">
+          <h3>📞 Quick Contact</h3>
+          <a href="tel:9818246792" class="contact-method">
+            <div class="cm-icon call"><i class="fas fa-phone"></i></div>
+            <div class="cm-info"><span>Call Us Directly</span><strong>9818246792</strong></div>
+          </a>
+          <a href="https://wa.me/919818246792?text=Hi%20Mohan%20ji%2C%20I%20want%20to%20book%20mehndi" target="_blank" class="contact-method">
+            <div class="cm-icon wa"><i class="fab fa-whatsapp"></i></div>
+            <div class="cm-info"><span>WhatsApp Message</span><strong>+91 9818246792</strong></div>
+          </a>
+        </div>
+        <div class="sidebar-card">
+          <h3>📍 Visit Us</h3>
+          <p style="color:var(--text-light);font-size:0.85rem;line-height:1.8;">
+            <strong style="color:var(--maroon-dark);">Mohan Mehandi Art</strong><br/>
+            Sec 15 Main Market,<br/>Near Burger Club,<br/>Faridabad, Haryana – 121007<br/>India
+          </p>
+          <a href="https://maps.google.com/?q=Sector+15+Market+Faridabad" target="_blank" class="btn btn-maroon btn-sm" style="margin-top:14px;width:100%;justify-content:center;"><i class="fas fa-directions"></i> Get Directions</a>
+        </div>
+        <div class="sidebar-card">
+          <h3>⏰ Working Hours</h3>
+          <ul style="list-style:none;font-size:0.85rem;color:var(--text-light);">
+            <li style="padding:6px 0;border-bottom:1px solid var(--cream-dark);">Monday – Sunday &nbsp;<strong style="color:var(--maroon);">2PM – 11PM</strong></li>
+            <li style="padding:6px 0;border-bottom:1px solid var(--cream-dark);"><span style="color:var(--gold);font-size:0.78rem;">✦ Open All Days · 7 Days a Week</span></li>
+            <li style="padding:6px 0;color:var(--gold);">✦ Available for events 24/7</li>
+          </ul>
+        </div>
+        <div class="sidebar-card" style="background:linear-gradient(135deg,var(--maroon-dark),var(--maroon));border:none;">
+          <h3 style="color:var(--gold);">✨ Why Book With Us?</h3>
+          <ul style="list-style:none;font-size:0.82rem;color:rgba(255,255,255,0.8);">
+            <li style="padding:6px 0;">✦ 12+ years of experience</li>
+            <li style="padding:6px 0;">✦ 100% natural henna</li>
+            <li style="padding:6px 0;">✦ On-time guarantee</li>
+            <li style="padding:6px 0;">✦ Home service available</li>
+            <li style="padding:6px 0;">✦ 500+ happy customers</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><span class="logo-text">Mohan Mehandi Art</span><p>Creating beautiful mehndi memories since 2012.</p></div>
+    <div><div class="footer-heading">Quick Links</div><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a href="#">Bridal Mehndi</a></li><li><a href="#">Arabic Mehndi</a></li><li><a href="#">Festival Mehndi</a></li></ul></div>
+    <div><div class="footer-heading">Contact</div><div class="footer-contact-item"><span class="icon"><i class="fas fa-phone"></i></span><a href="tel:9818246792" style="color:inherit;text-decoration:none;">9818246792</a></div></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 Mohan Mehandi Art. All rights reserved.</p></div>
+</footer>
+<a href="https://wa.me/919818246792" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+<script src="assets/js/catalog.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  // Pre-fill from URL params
+  window.addEventListener('DOMContentLoaded', () => {
+    const p = new URLSearchParams(window.location.search);
+    if(p.get('design')) document.getElementById('bDesign').value = 'Design #' + p.get('design') + ' – ' + (p.get('name') || '');
+    if(p.get('pkg')) {
+      const s = document.getElementById('bService');
+      const map = { bridal:'Bridal Mehndi', arabic:'Arabic Mehndi', party:'Party Mehndi', festival:'Festival Mehndi', simple:'Simple Mehndi' };
+      s.value = map[p.get('pkg')] || '';
+    }
+    // Min date = today
+    document.getElementById('bDate').min = new Date().toISOString().split('T')[0];
+    updateNavUser();
+  });
+
+  async function submitBooking(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    if(btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…'; }
+    const booking = {
+      name:    document.getElementById('bName').value,
+      phone:   document.getElementById('bPhone').value,
+      service: document.getElementById('bService').value,
+      design:  document.getElementById('bDesign').value,
+      date:    document.getElementById('bDate').value,
+      time:    document.getElementById('bTime').value,
+      address: document.getElementById('bAddress').value,
+      notes:   document.getElementById('bNote').value
+    };
+    try {
+      await addBooking(booking);
+    } catch(err) {
+      // fallback already handled in addBooking; still proceed to success screen
+      console.warn('Booking API error (using local fallback):', err);
+    }
+    document.getElementById('successPhone').textContent = booking.phone;
+    document.getElementById('bookingFormWrap').style.display = 'none';
+    document.getElementById('bookingSuccess').style.display = 'block';
+    showToast('Booking request submitted!', 'success');
+    if(btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-calendar-check"></i> Submit Booking Request'; }
+  }
+</script>
+</body>
+</html>

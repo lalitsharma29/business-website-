@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="p:domain_verify" content="7174b8c8a4807036d26d1fd3c2939729"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mehndi Catalog – Book Your Design | Mohan Mehandi Art Faridabad</title>
+  <meta name="description" content="Browse our full mehndi design catalog. Bridal, Arabic, Simple, Festival, Party & more. Pick your favourite design and book it instantly." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ── Hero banner ── */
+    .catalog-hero {
+      background: linear-gradient(135deg, var(--maroon-dark) 0%, var(--maroon) 60%, #6b1628 100%);
+      padding: 80px 5% 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .catalog-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('assets/images/hero_bg.png') center/cover;
+      opacity: 0.06;
+    }
+    .catalog-hero-content { position: relative; z-index: 2; }
+    .catalog-hero h1 { color: var(--white); font-size: clamp(2rem,5vw,3.2rem); margin-bottom: 10px; }
+    .catalog-hero p  { color: rgba(255,255,255,0.78); font-size: 1rem; max-width: 560px; margin: 0 auto 24px; }
+    .catalog-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+    .catalog-stat  { color: rgba(255,255,255,0.85); font-size: 0.82rem; }
+    .catalog-stat strong { color: var(--gold); font-size: 1.3rem; display: block; }
+
+    /* ── Filter / search bar ── */
+    .filter-section { background: var(--white); border-bottom: 1px solid var(--cream-dark); padding: 18px 5%; position: sticky; top: 70px; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    .filter-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    .search-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .catalog-search { flex: 1; min-width: 200px; padding: 10px 18px; border: 2px solid var(--gold); border-radius: 999px; font-family: 'Poppins', sans-serif; font-size: 0.88rem; outline: none; color: var(--text-dark); }
+    .catalog-search:focus { border-color: var(--maroon); }
+    .sort-select { padding: 10px 14px; border: 1.5px solid var(--cream-dark); border-radius: 999px; font-family: 'Poppins', sans-serif; font-size: 0.82rem; color: var(--text-dark); cursor: pointer; outline: none; }
+    .cat-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cat-pill { padding: 7px 16px; border-radius: 999px; border: 1.5px solid var(--cream-dark); background: var(--white); font-size: 0.78rem; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: all 0.2s; color: var(--text-mid); white-space: nowrap; }
+    .cat-pill:hover { border-color: var(--gold); color: var(--maroon); }
+    .cat-pill.active { background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)); color: #fff; border-color: transparent; }
+
+    /* ── Catalog grid ── */
+    .catalog-section { background: var(--cream); padding: 36px 5% 60px; }
+    .catalog-container { max-width: 1200px; margin: 0 auto; }
+    .result-info { font-size: 0.82rem; color: var(--text-light); margin-bottom: 20px; }
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
+
+    /* ── Design card ── */
+    .c-card { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 18px rgba(123,28,46,0.08); border: 1.5px solid var(--cream-dark); transition: all 0.3s ease; position: relative; }
+    .c-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: var(--gold); }
+    .c-card-img { position: relative; height: 230px; overflow: hidden; cursor: pointer; }
+    .c-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }
+    .c-card:hover .c-card-img img { transform: scale(1.06); }
+    .c-cat-badge { position: absolute; top: 10px; left: 10px; background: var(--maroon); color: #fff; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; }
+    .c-serial  { position: absolute; top: 10px; right: 10px; background: rgba(201,168,76,0.92); color: var(--maroon-dark); padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; }
+    .zoom-hint { position: absolute; inset: 0; background: rgba(0,0,0,0.0); display: flex; align-items: center; justify-content: center; opacity: 0; transition: all 0.3s; font-size: 1.6rem; color: white; }
+    .c-card:hover .zoom-hint { opacity: 1; background: rgba(0,0,0,0.18); }
+    .c-card-body { padding: 14px 16px 18px; }
+    .c-name { font-family: 'Playfair Display', serif; font-size: 0.96rem; color: var(--maroon-dark); font-weight: 700; margin-bottom: 6px; }
+    .c-price { font-size: 1.25rem; font-weight: 800; color: var(--maroon); margin-bottom: 4px; }
+    .c-desc { font-size: 0.74rem; color: var(--text-light); margin-bottom: 12px; line-height: 1.6; }
+    .c-actions { display: flex; gap: 8px; }
+    .c-book-btn {
+      flex: 1; padding: 10px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+      color: #fff; border: none; font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.25s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .c-book-btn:hover { background: linear-gradient(135deg, var(--gold), #b8922c); color: var(--maroon-dark); transform: translateY(-1px); }
+    .c-wa-btn {
+      width: 40px; height: 40px; border-radius: 9px; border: none; cursor: pointer;
+      background: rgba(37,211,102,0.12); color: #25D366; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink:0;
+    }
+    .c-wa-btn:hover { background: #25D366; color: white; }
+
+    /* no results */
+    .no-results-msg { text-align: center; padding: 60px 20px; color: var(--text-light); grid-column: 1/-1; }
+    .no-results-msg i { font-size: 2.5rem; color: var(--gold); display: block; margin-bottom: 14px; }
+
+    /* ── Lightbox ── */
+    .clb { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; visibility: hidden; transition: all 0.3s; }
+    .clb.active { opacity: 1; visibility: visible; }
+    .clb-inner { background: #fff; border-radius: 20px; overflow: hidden; max-width: 860px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; max-height: 92vh; box-shadow: 0 32px 80px rgba(0,0,0,0.5); }
+    .clb-img { position: relative; background: var(--cream); }
+    .clb-img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 340px; }
+    .clb-close { position: absolute; top: 12px; right: 14px; background: rgba(0,0,0,0.55); color: #fff; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1.1rem; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .clb-close:hover { background: var(--maroon); }
+    .clb-body { padding: 32px 28px; overflow-y: auto; display: flex; flex-direction: column; justify-content: space-between; }
+    .clb-serial { color: var(--gold); font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 4px; }
+    .clb-name   { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--maroon-dark); margin-bottom: 4px; }
+    .clb-cat    { color: var(--text-light); font-size: 0.82rem; margin-bottom: 14px; }
+    .clb-price  { font-size: 2rem; font-weight: 800; color: var(--maroon); margin-bottom: 8px; }
+    .clb-desc   { color: var(--text-light); font-size: 0.86rem; line-height: 1.8; margin-bottom: 24px; }
+    .clb-actions { display: flex; flex-direction: column; gap: 10px; }
+    .clb-book-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; border-radius: 10px; background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)); color: #fff; text-decoration: none; font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.25s; }
+    .clb-book-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(123,28,46,0.35); }
+    .clb-wa-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; background: rgba(37,211,102,0.1); color: #1a9e4c; text-decoration: none; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; transition: all 0.25s; }
+    .clb-wa-btn:hover { background: #25D366; color: white; }
+    .clb-tip { background: rgba(201,168,76,0.1); border-radius: 8px; padding: 10px 14px; font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 4px; }
+
+    @media(max-width:680px) {
+      .clb-inner { grid-template-columns: 1fr; }
+      .clb-img img { min-height: 220px; height: 220px; }
+      .catalog-grid { grid-template-columns: 1fr 1fr; }
+      .filter-section { top: 60px; }
+    }
+    @media(max-width:400px) { .catalog-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/images/mohan_ji_real.jpg" alt="Mohan Mehandi Art Logo" />
+      <div class="nav-logo-text"><span>Mohan Mehandi</span><span>Mehndi Artist • Faridabad</span></div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="catalog.html" class="active">Catalog</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="booking.html" class="nav-cta">Book Now</a></li>
+      <li><a href="login.html" id="loginNavBtn"><i class="fa fa-user"></i> Login</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="catalog-hero">
+    <div class="catalog-hero-content">
+      <div class="breadcrumb" style="justify-content:center;margin-bottom:16px;">
+        <a href="index.html" style="color:rgba(255,255,255,0.6);">Home</a><span style="color:rgba(255,255,255,0.4);">/</span><span style="color:var(--gold);">Catalog</span>
+      </div>
+      <h1>Mehndi Design <span style="color:var(--gold);">Catalog</span></h1>
+      <p>Browse all our designs, pick your favourite, and book it instantly with one click!</p>
+      <div class="catalog-stats">
+        <div class="catalog-stat"><strong id="heroCount">–</strong> Designs Available</div>
+        <div class="catalog-stat"><strong>10+</strong> Categories</div>
+        <div class="catalog-stat"><strong>₹200</strong> Starting Price</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY FILTER BAR -->
+  <div class="filter-section">
+    <div class="filter-inner">
+      <div class="search-row">
+        <input class="catalog-search" id="catalogSearch" type="text" placeholder="🔍  Search by design name or category…" oninput="renderCatalog()" />
+        <select class="sort-select" id="sortSelect" onchange="renderCatalog()">
+          <option value="default">Sort: Default</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+          <option value="name-asc">Name: A → Z</option>
+        </select>
+      </div>
+      <div class="cat-pills" id="catPills">
+        <button class="cat-pill active" data-cat="all" onclick="setFilter('all',this)">✦ All</button>
+        <button class="cat-pill" data-cat="Bridal"     onclick="setFilter('Bridal',this)">👑 Bridal</button>
+        <button class="cat-pill" data-cat="Arabic"     onclick="setFilter('Arabic',this)">🌙 Arabic</button>
+        <button class="cat-pill" data-cat="Simple"     onclick="setFilter('Simple',this)">🌿 Simple</button>
+        <button class="cat-pill" data-cat="Festival"   onclick="setFilter('Festival',this)">🎊 Festival</button>
+        <button class="cat-pill" data-cat="Party"      onclick="setFilter('Party',this)">🎉 Party</button>
+        <button class="cat-pill" data-cat="Rajasthani" onclick="setFilter('Rajasthani',this)">🏰 Rajasthani</button>
+        <button class="cat-pill" data-cat="Indo-Arabic" onclick="setFilter('Indo-Arabic',this)">🌺 Indo-Arabic</button>
+        <button class="cat-pill" data-cat="Feet"       onclick="setFilter('Feet',this)">👣 Feet</button>
+        <button class="cat-pill" data-cat="Finger"     onclick="setFilter('Finger',this)">💍 Finger</button>
+        <button class="cat-pill" data-cat="Glitter"    onclick="setFilter('Glitter',this)">✨ Glitter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATALOG GRID -->
+  <section class="catalog-section">
+    <div class="catalog-container">
+      <div class="result-info" id="resultInfo">Loading designs…</div>
+      <div class="catalog-grid" id="catalogGrid"></div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <div class="cta-section" style="background:linear-gradient(135deg,var(--maroon-dark),var(--maroon),var(--maroon-dark));padding:72px 5%;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:relative;z-index:2;">
+      <h2 style="color:var(--white);font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:12px;">Found Your Favourite <span style="color:var(--gold)">Design?</span></h2>
+      <p style="color:rgba(255,255,255,0.78);font-size:1rem;margin-bottom:30px;">Book it now or WhatsApp us the design number. We confirm within hours!</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="booking.html" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+        <a href="https://wa.me/919818246792" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+        <a href="tel:9818246792" class="btn btn-secondary"><i class="fas fa-phone"></i> Call 9818246792</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-text">Mohan Mehandi Art</span>
+        <p>Creating beautiful mehndi memories since 2012. Professional henna artist in Faridabad.</p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+          <a href="https://wa.me/919818246792" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="catalog.html">Catalog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="booking.html">Book Now</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Categories</div>
+        <ul class="footer-links">
+          <li><a href="catalog.html?cat=Bridal">Bridal Mehndi</a></li>
+          <li><a href="catalog.html?cat=Arabic">Arabic Mehndi</a></li>
+          <li><a href="catalog.html?cat=Festival">Festival Mehndi</a></li>
+          <li><a href="catalog.html?cat=Party">Party Mehndi</a></li>
+          <li><a href="catalog.html?cat=Simple">Simple Mehndi</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Contact</div>
+        <div class="footer-contact-item"><span class="icon"><i class="fas fa-map-marker-alt"></i></span><span>Sec 15 Main Market, Near Burger Club, Faridabad</span></div>
+        <div class="footer-contact-item"><span class="icon"><i class="fas fa-phone"></i></span><a href="tel:9818246792" style="color:inherit;text-decoration:none;">9818246792</a></div>
+        <div class="footer-contact-item"><span class="icon"><i class="fab fa-whatsapp"></i></span><a href="https://wa.me/919818246792" style="color:inherit;text-decoration:none;">WhatsApp Us</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Mohan Mehandi Art. All rights reserved. | <a href="login.html" style="color:var(--gold);">Admin Login</a></p></div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="clb" id="clb" onclick="handleCLBClick(event)">
+    <div class="clb-inner" onclick="event.stopPropagation()">
+      <div class="clb-img">
+        <button class="clb-close" onclick="closeCLB()">✕</button>
+        <img id="clbImg" src="" alt="Mehndi Design" onerror="this.src='assets/images/bridal_mehndi_1.png'" />
+      </div>
+      <div class="clb-body">
+        <div>
+          <div class="clb-serial" id="clbSerial"></div>
+          <div class="clb-name"   id="clbName"></div>
+          <div class="clb-cat"    id="clbCat"></div>
+          <div class="clb-price"  id="clbPrice"></div>
+          <div class="clb-desc"   id="clbDesc"></div>
+        </div>
+        <div class="clb-actions">
+          <a id="clbBookBtn" href="booking.html" class="clb-book-btn"><i class="fas fa-calendar-check"></i> Book This Design</a>
+          <a id="clbWABtn"  href="#" target="_blank" class="clb-wa-btn"><i class="fab fa-whatsapp"></i> WhatsApp This Design</a>
+          <div class="clb-tip">📞 Or call us at <strong>9818246792</strong> and mention the design number</div>
+          <button onclick="closeCLB()" style="background:none;border:none;color:var(--text-light);font-size:0.82rem;cursor:pointer;margin-top:4px;">✕ Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/919818246792?text=Hi%20Mohan%20ji%2C%20I%20want%20to%20book%20mehndi" target="_blank" class="whatsapp-float" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+  <script src="assets/js/catalog.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    let activeCat = 'all';
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Read URL param for pre-selected category
+      const urlCat = new URLSearchParams(window.location.search).get('cat');
+      if (urlCat) {
+        activeCat = urlCat;
+        document.querySelectorAll('.cat-pill').forEach(p => p.classList.toggle('active', p.dataset.cat === urlCat));
+      }
+      await renderCatalog();
+      updateNavUser();
+    });
+
+    // ── Filter ────────────────────────────────────────────────────────────────
+    function setFilter(cat, el) {
+      activeCat = cat;
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      renderCatalog();
+    }
+
+    // ── Render ────────────────────────────────────────────────────────────────
+    async function renderCatalog() {
+      const q    = (document.getElementById('catalogSearch').value || '').toLowerCase();
+      const sort = document.getElementById('sortSelect').value;
+      const grid = document.getElementById('catalogGrid');
+      const info = document.getElementById('resultInfo');
+
+      info.textContent = 'Loading designs…';
+      let designs = await getDesigns();
+      if (activeCat !== 'all') designs = designs.filter(d => d.category === activeCat);
+      if (q) designs = designs.filter(d =>
+        d.name.toLowerCase().includes(q) ||
+        d.category.toLowerCase().includes(q) ||
+        (d.serial||'').toLowerCase().includes(q) ||
+        (d.desc||'').toLowerCase().includes(q)
+      );
+
+      // Sort
+      if (sort === 'price-asc')  designs.sort((a,b) => a.price - b.price);
+      if (sort === 'price-desc') designs.sort((a,b) => b.price - a.price);
+      if (sort === 'name-asc')   designs.sort((a,b) => a.name.localeCompare(b.name));
+
+      // Hero count
+      const heroEl = document.getElementById('heroCount');
+      if (heroEl) heroEl.textContent = designs.length;
+
+      info.textContent = `Showing ${designs.length} design${designs.length !== 1 ? 's' : ''}${activeCat !== 'all' ? ' in ' + activeCat : ''}`;
+
+      if (!designs.length) {
+        grid.innerHTML = `<div class="no-results-msg"><i class="fas fa-search"></i>No designs found. Try a different filter or search term.</div>`;
+        return;
+      }
+
+      grid.innerHTML = designs.map(d => {
+        const did = JSON.stringify(String(d.id || d._id));
+        return `
+        <div class="c-card">
+          <div class="c-card-img" onclick="openCLB(${did})">
+            <img src="${d.image || 'assets/images/bridal_mehndi_1.png'}"
+                 alt="${d.name} – Mehndi Design"
+                 onerror="this.src='assets/images/bridal_mehndi_1.png'"
+                 loading="lazy" />
+            <span class="c-cat-badge">${d.category}</span>
+            <span class="c-serial">#${d.serial}</span>
+            <div class="zoom-hint"><i class="fas fa-search-plus"></i></div>
+          </div>
+          <div class="c-card-body">
+            <div class="c-name">${d.name}</div>
+            <div class="c-price">₹${Number(d.price).toLocaleString()}</div>
+            <div class="c-desc">${d.desc || ''}</div>
+            <div class="c-actions">
+              <button class="c-book-btn" onclick="bookDesign(${did})">
+                <i class="fas fa-calendar-check"></i> Book This Design
+              </button>
+              <button class="c-wa-btn" onclick="waDesign(${did})" title="WhatsApp this design">
+                <i class="fab fa-whatsapp"></i>
+              </button>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    // ── Booking actions ───────────────────────────────────────────────────────
+    async function bookDesign(id) {
+      const designs = await getDesigns();
+      const d = designs.find(x => String(x.id || x._id) === String(id));
+      if (!d) return;
+      window.location.href = `booking.html?design=${encodeURIComponent(d.serial)}&name=${encodeURIComponent(d.name)}`;
+    }
+    async function waDesign(id) {
+      const designs = await getDesigns();
+      const d = designs.find(x => String(x.id || x._id) === String(id));
+      if (!d) return;
+      window.open(`https://wa.me/919818246792?text=Hi%20Mohan%20ji%2C%20I%20like%20Design%20%23${d.serial}%20-%20${encodeURIComponent(d.name)}%20(₹${d.price}).%20Please%20confirm%20availability.`, '_blank');
+    }
+
+    // ── Lightbox ──────────────────────────────────────────────────────────────
+    async function openCLB(id) {
+      const designs = await getDesigns();
+      const d = designs.find(x => String(x.id || x._id) === String(id));
+      if (!d) return;
+      document.getElementById('clbImg').src    = d.image || 'assets/images/bridal_mehndi_1.png';
+      document.getElementById('clbSerial').textContent = 'Design #' + d.serial;
+      document.getElementById('clbName').textContent   = d.name;
+      document.getElementById('clbCat').textContent    = d.category + ' Mehndi';
+      document.getElementById('clbPrice').textContent  = '₹' + Number(d.price).toLocaleString();
+      document.getElementById('clbDesc').textContent   = d.desc || '';
+      document.getElementById('clbBookBtn').href = `booking.html?design=${encodeURIComponent(d.serial)}&name=${encodeURIComponent(d.name)}`;
+      document.getElementById('clbWABtn').href   = `https://wa.me/919818246792?text=Hi%20Mohan%20ji%2C%20I%20like%20Design%20%23${d.serial}%20-%20${encodeURIComponent(d.name)}%20(₹${d.price}).%20Please%20confirm%20availability.`;
+      document.getElementById('clb').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCLB() {
+      document.getElementById('clb').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function handleCLBClick(e) {
+      if (e.target === document.getElementById('clb')) closeCLB();
+    }
+  </script>
+</body>
+</html>

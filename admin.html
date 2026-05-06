@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="p:domain_verify" content="7174b8c8a4807036d26d1fd3c2939729"/>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Host Dashboard – Mohan Mehandi Art</title>
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body { background: #f5ede0; }
+    .admin-layout { display: flex; min-height: 100vh; }
+    .admin-sidebar {
+      width: 230px; background: var(--maroon-dark); flex-shrink: 0;
+      display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 500;
+    }
+    .sidebar-brand { padding: 22px 18px; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .sidebar-brand .name { font-family: 'Dancing Script', cursive; color: var(--gold); font-size: 1.3rem; line-height: 1.2; }
+    .sidebar-brand .role { color: rgba(255,255,255,0.45); font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+    .sidebar-nav { flex: 1; padding: 14px 10px; overflow-y: auto; }
+    .sidebar-nav a {
+      display: flex; align-items: center; gap: 10px; padding: 10px 13px;
+      border-radius: 9px; color: rgba(255,255,255,0.6); text-decoration: none;
+      font-size: 0.84rem; font-weight: 500; transition: var(--transition); margin-bottom: 3px;
+    }
+    .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(201,168,76,0.15); color: var(--gold); }
+    .sidebar-nav a i { width: 16px; text-align: center; }
+    .sidebar-footer { padding: 14px 16px; border-top: 1px solid rgba(201,168,76,0.15); }
+    .admin-main { margin-left: 230px; flex: 1; padding: 28px; }
+    .admin-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .admin-topbar h1 { font-size: 1.5rem; color: var(--maroon-dark); }
+    .host-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(201,168,76,0.15); border: 1px solid var(--gold);
+      color: var(--gold); padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+    }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; margin-bottom: 24px; }
+    .stat-card { background: white; border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px; }
+    .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .stat-icon.gold { background: rgba(201,168,76,0.12); color: var(--gold); }
+    .stat-icon.maroon { background: rgba(123,28,46,0.08); color: var(--maroon); }
+    .stat-icon.green { background: rgba(39,174,96,0.1); color: #27ae60; }
+    .stat-icon.blue { background: rgba(52,152,219,0.1); color: #3498db; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--text-dark); display: block; }
+    .stat-lbl { font-size: 0.72rem; color: var(--text-light); }
+    .admin-panel { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 26px; margin-bottom: 22px; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+    .panel-header h2 { font-size: 1.15rem; color: var(--maroon-dark); }
+
+    /* IMAGE UPLOAD */
+    .upload-zone {
+      border: 2px dashed var(--gold); border-radius: var(--radius-lg);
+      padding: 40px 20px; text-align: center; cursor: pointer;
+      background: rgba(201,168,76,0.04); transition: var(--transition);
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag-over { background: rgba(201,168,76,0.1); border-color: var(--maroon); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-zone .up-icon { font-size: 2.5rem; color: var(--gold); display: block; margin-bottom: 10px; }
+    .upload-zone h3 { color: var(--maroon-dark); font-size: 1rem; margin-bottom: 6px; }
+    .upload-zone p { color: var(--text-light); font-size: 0.8rem; }
+    .img-preview { width: 90px; height: 90px; object-fit: cover; border-radius: 8px; border: 2px solid var(--gold); display: none; margin: 10px auto 0; }
+
+    /* DESIGN CARDS GRID (admin view) */
+    .design-manage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
+    .design-manage-card {
+      background: white; border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: 0 4px 16px rgba(123,28,46,0.08); border: 1px solid var(--cream-dark);
+      transition: var(--transition); position: relative;
+    }
+    .design-manage-card:hover { box-shadow: var(--shadow); transform: translateY(-4px); }
+    .design-manage-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .design-card-body { padding: 12px; }
+    .design-card-serial { font-size: 0.7rem; font-weight: 700; color: var(--gold); background: rgba(201,168,76,0.1); padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 6px; }
+    .design-card-name { font-weight: 600; font-size: 0.88rem; color: var(--maroon-dark); margin-bottom: 4px; }
+    .design-card-cat { font-size: 0.72rem; color: var(--text-light); margin-bottom: 8px; }
+    /* Inline price edit */
+    .price-edit-wrap { display: flex; align-items: center; gap: 6px; }
+    .price-display { font-size: 1rem; font-weight: 700; color: var(--maroon); cursor: pointer; border-bottom: 1px dashed var(--gold); }
+    .price-display:hover { color: var(--gold); }
+    .price-input { display: none; width: 80px; padding: 4px 8px; border: 1.5px solid var(--gold); border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 0.85rem; }
+    .price-save-btn { display: none; background: var(--gold); color: var(--maroon-dark); border: none; border-radius: 5px; padding: 4px 8px; font-size: 0.75rem; cursor: pointer; font-weight: 700; }
+    .design-card-actions { display: flex; gap: 6px; margin-top: 10px; }
+    .dca-btn { flex: 1; padding: 7px; border-radius: 7px; border: none; cursor: pointer; font-size: 0.78rem; font-weight: 600; font-family: 'Poppins', sans-serif; transition: var(--transition); }
+    .dca-edit { background: rgba(52,152,219,0.1); color: #2980b9; }
+    .dca-edit:hover { background: #2980b9; color: white; }
+    .dca-del { background: rgba(231,76,60,0.1); color: #e74c3c; }
+    .dca-del:hover { background: #e74c3c; color: white; }
+    .design-card-badge { position: absolute; top: 8px; left: 8px; background: rgba(201,168,76,0.9); color: var(--maroon-dark); padding: 3px 9px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; }
+
+    /* TABLE */
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    .admin-table th { background: var(--cream); color: var(--maroon-dark); font-weight: 600; padding: 11px 13px; text-align: left; border-bottom: 2px solid var(--cream-dark); }
+    .admin-table td { padding: 11px 13px; border-bottom: 1px solid var(--cream-dark); color: var(--text-mid); vertical-align: middle; }
+    .admin-table tr:hover td { background: rgba(201,168,76,0.03); }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+    .badge-pending { background: rgba(230,126,34,0.12); color: #e67e22; }
+    .badge-confirmed { background: rgba(39,174,96,0.12); color: #27ae60; }
+    .badge-done { background: rgba(52,152,219,0.12); color: #2980b9; }
+    .action-btns { display: flex; gap: 7px; }
+    .action-btn { width: 30px; height: 30px; border-radius: 7px; border: none; cursor: pointer; font-size: 0.82rem; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+    .action-btn.confirm { background: rgba(39,174,96,0.1); color: #27ae60; }
+    .action-btn.confirm:hover { background: #27ae60; color: white; }
+    .action-btn.delete { background: rgba(231,76,60,0.1); color: #e74c3c; }
+    .action-btn.delete:hover { background: #e74c3c; color: white; }
+    .tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--cream-dark); margin-bottom: 18px; }
+    .admin-tab { padding: 9px 16px; border: none; background: none; font-family: 'Poppins', sans-serif; font-size: 0.83rem; font-weight: 600; color: var(--text-light); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: var(--transition); }
+    .admin-tab.active { color: var(--maroon); border-color: var(--maroon); }
+    @media(max-width:1100px){ .stats-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:768px){ .admin-sidebar{transform:translateX(-100%);} .admin-main{margin-left:0;} }
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <div class="name">Mohan Mehandi Art</div>
+      <div class="role">👑 Host Dashboard</div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="active" onclick="showTab('overview',this)"><i class="fas fa-chart-pie"></i> Overview</a>
+      <a href="#" onclick="showTab('designs',this)"><i class="fas fa-images"></i> Manage Designs</a>
+      <a href="#" onclick="showTab('upload',this)"><i class="fas fa-cloud-upload-alt"></i> Add New Design</a>
+      <a href="#" onclick="showTab('bookings',this)"><i class="fas fa-calendar-check"></i> Bookings</a>
+      <a href="#" onclick="showTab('users',this)"><i class="fas fa-users"></i> Customers</a>
+      <hr style="border-color:rgba(201,168,76,0.15);margin:10px 0;" />
+      <a href="pinterest-setup.html"><i class="fab fa-pinterest" style="color:#e60023;"></i> Import from Pinterest</a>
+      <a href="catalog.html" target="_blank"><i class="fas fa-th-large" style="color:var(--gold);"></i> View Catalog (Visitor)</a>
+      <a href="index.html" target="_blank"><i class="fas fa-external-link-alt"></i> View Website</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button onclick="if(confirm('Logout?')){logoutUser();window.location.href='login.html';}" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;font-size:0.8rem;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 id="panelTitle">📊 Overview</h1>
+      <div class="host-badge"><i class="fas fa-crown"></i> Mohan (Host)</div>
+    </div>
+
+    <!-- ======== OVERVIEW ======== -->
+    <div id="tab-overview">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon gold"><i class="fas fa-images"></i></div><div><span class="stat-num" id="totalDesigns">0</span><span class="stat-lbl">Designs in Catalog</span></div></div>
+        <div class="stat-card"><div class="stat-icon maroon"><i class="fas fa-calendar-check"></i></div><div><span class="stat-num" id="totalBookings">0</span><span class="stat-lbl">Total Bookings</span></div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="fas fa-hourglass-half"></i></div><div><span class="stat-num" id="pendingBookings">0</span><span class="stat-lbl">Pending</span></div></div>
+        <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-users"></i></div><div><span class="stat-num" id="totalUsers">0</span><span class="stat-lbl">Registered Visitors</span></div></div>
+      </div>
+      <div class="admin-panel">
+        <div class="panel-header"><h2>📅 Recent Booking Requests</h2><button class="btn btn-secondary btn-sm" onclick="showTab('bookings',null)">View All</button></div>
+        <table class="admin-table"><thead><tr><th>Name</th><th>Service</th><th>Date</th><th>Phone</th><th>Status</th></tr></thead>
+        <tbody id="recentBookings"></tbody></table>
+      </div>
+      <div class="admin-panel">
+        <div class="panel-header"><h2>✨ Quick Actions</h2></div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="showTab('upload',null)"><i class="fas fa-plus"></i> Add New Design</button>
+          <button class="btn btn-maroon" onclick="showTab('designs',null)"><i class="fas fa-edit"></i> Edit Designs & Prices</button>
+          <button class="btn btn-secondary" onclick="showTab('bookings',null)"><i class="fas fa-calendar"></i> Manage Bookings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== ADD NEW DESIGN (UPLOAD) ======== -->
+    <div id="tab-upload" style="display:none;">
+      <div class="admin-panel">
+        <div class="panel-header"><h2>📸 Add New Mehndi Design to Catalog</h2></div>
+
+        <!-- Storage Usage Bar -->
+        <div id="storageBar" style="background:var(--cream);border-radius:10px;padding:14px 18px;margin-bottom:20px;border:1px solid var(--cream-dark);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.8rem;color:var(--text-light);font-weight:600;">💾 Catalog Storage Used</span>
+            <span id="storageText" style="font-size:0.78rem;color:var(--maroon);font-weight:700;">Calculating…</span>
+          </div>
+          <div style="height:8px;background:#e8ddd5;border-radius:99px;overflow:hidden;">
+            <div id="storageFill" style="height:100%;background:linear-gradient(90deg,var(--gold),var(--maroon));border-radius:99px;transition:width 0.4s;width:0%"></div>
+          </div>
+          <p style="font-size:0.72rem;color:var(--text-light);margin-top:6px;">Images are auto-compressed to ~80 KB before saving. Delete old designs to free up space.</p>
+        </div>
+
+        <!-- Tips Box -->
+        <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:0.8rem;color:var(--text-dark);line-height:1.8;">
+          <strong style="color:var(--maroon-dark);">💡 Two ways to add an image:</strong><br/>
+          <b>Option A – Upload from your phone/computer:</b> Click the upload zone below → select your photo → it will be <em>automatically compressed</em> to save storage.<br/>
+          <b>Option B – Paste an image URL:</b> Copy a link from Google Images or Pinterest and paste it in the URL field. This uses zero storage space!
+        </div>
+
+        <!-- IMAGE UPLOAD ZONE -->
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="imageFileInput" accept="image/*" onchange="handleImageSelect(event)" />
+          <span class="up-icon">📷</span>
+          <h3>Click to Upload or Drag & Drop Image</h3>
+          <p>Supports: JPG, PNG, WEBP · Any size (auto-compressed to ~80 KB)</p>
+          <img id="imgPreview" class="img-preview" alt="Preview" />
+        </div>
+        <p style="text-align:center;color:var(--text-light);font-size:0.78rem;margin:10px 0;">— OR paste an image URL (recommended for saving storage space) —</p>
+        <div class="form-group">
+          <input type="url" id="dImageUrl" placeholder="https://example.com/your-mehndi-photo.jpg" oninput="showUrlPreview()" style="background:var(--white);" />
+        </div>
+
+        <form id="addDesignForm" onsubmit="submitNewDesign(event)" style="margin-top:6px;">
+          <div class="form-row">
+            <div class="form-group"><label>Design Name *</label><input type="text" id="dName" required placeholder="e.g. Royal Bridal Full Set" /></div>
+            <div class="form-group"><label>Category *</label>
+              <select id="dCat" required style="background:var(--white);">
+                <option value="">Select Category</option>
+                <option>Bridal</option><option>Arabic</option><option>Festival</option>
+                <option>Party</option><option>Simple</option><option>Rajasthani</option>
+                <option>Indo-Arabic</option><option>Feet</option><option>Finger</option><option>Glitter</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Price (₹) *</label><input type="number" id="dPrice" required placeholder="e.g. 2500" min="0" /></div>
+            <div class="form-group"><label>Serial # (auto if blank)</label><input type="text" id="dSerial" placeholder="e.g. M013" /></div>
+          </div>
+          <div class="form-group"><label>Description</label><textarea id="dDesc" placeholder="Short description of the design…" style="min-height:70px;background:var(--white);"></textarea></div>
+          <div style="display:flex;gap:12px;">
+            <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center;"><i class="fas fa-save"></i> Save Design to Catalog</button>
+            <button type="button" class="btn btn-secondary" onclick="resetUploadForm()"><i class="fas fa-redo"></i> Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ======== MANAGE DESIGNS ======== -->
+    <div id="tab-designs" style="display:none;">
+      <div class="admin-panel">
+        <div class="panel-header">
+          <h2>🖼️ All Designs <span id="designCountBadge" style="font-size:0.8rem;color:var(--text-light);font-weight:400;"></span></h2>
+          <button class="btn btn-primary btn-sm" onclick="showTab('upload',null)"><i class="fas fa-plus"></i> Add New</button>
+        </div>
+        <p style="color:var(--text-light);font-size:0.82rem;margin-bottom:18px;">💡 <strong>Click ₹ price</strong> on any card to edit it instantly. Use Edit to change image or details.</p>
+        <div class="design-manage-grid" id="designManageGrid"></div>
+      </div>
+    </div>
+
+    <!-- ======== BOOKINGS ======== -->
+    <div id="tab-bookings" style="display:none;">
+      <div class="admin-panel">
+        <div class="panel-header"><h2>📅 Booking Requests</h2></div>
+        <div class="tabs">
+          <button class="admin-tab active" onclick="filterBookings('all',this)">All</button>
+          <button class="admin-tab" onclick="filterBookings('pending',this)">Pending</button>
+          <button class="admin-tab" onclick="filterBookings('confirmed',this)">Confirmed</button>
+          <button class="admin-tab" onclick="filterBookings('done',this)">Done</button>
+        </div>
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Phone</th><th>Service</th><th>Design Ref</th><th>Date / Time</th><th>Address</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="bookingsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======== CUSTOMERS ======== -->
+    <div id="tab-users" style="display:none;">
+      <div class="admin-panel">
+        <div class="panel-header"><h2>👥 Registered Visitors</h2></div>
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Phone</th><th>Registered On</th></tr></thead>
+          <tbody id="usersTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- EDIT DESIGN MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal" style="max-width:520px;">
+    <button class="modal-close" onclick="closeEditModal()">✕</button>
+    <div class="modal-header"><h3>Edit Design</h3><p>Update name, category, price or image</p></div>
+    <form id="editForm" onsubmit="saveEditForm(event)">
+      <input type="hidden" id="eId" />
+      <!-- Image section -->
+      <div class="upload-zone" style="padding:24px;margin-bottom:16px;" id="editUploadZone">
+        <input type="file" id="eImageFile" accept="image/*" onchange="handleEditImage(event)" />
+        <span class="up-icon" style="font-size:1.8rem;">📷</span>
+        <p style="font-size:0.8rem;color:var(--text-light);">Click to change image</p>
+        <img id="eImgPreview" class="img-preview" style="display:none;" alt="Preview" />
+      </div>
+      <div class="form-group"><label>Image URL (optional)</label><input type="url" id="eImageUrl" placeholder="Or paste image URL" /></div>
+      <div class="form-row">
+        <div class="form-group"><label>Name *</label><input type="text" id="eName" required /></div>
+        <div class="form-group"><label>Category *</label>
+          <select id="eCat" required style="background:var(--white);">
+            <option>Bridal</option><option>Arabic</option><option>Festival</option><option>Party</option><option>Simple</option>
+            <option>Rajasthani</option><option>Indo-Arabic</option><option>Feet</option><option>Finger</option><option>Glitter</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Price (₹) *</label><input type="number" id="ePrice" required min="0" /></div>
+        <div class="form-group"><label>Serial</label><input type="text" id="eSerial" /></div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea id="eDesc" style="min-height:70px;background:var(--white);"></textarea></div>
+      <div style="display:flex;gap:12px;">
+        <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center;"><i class="fas fa-save"></i> Save Changes</button>
+        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/catalog.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!requireAdmin()) return;
+  await loadStats();
+  await renderDesignCards();
+  await renderBookings('all');
+  await renderUsers();
+  setupDragDrop();
+  updateStorageBar();
+});
+
+function updateStorageBar() {
+  const bar = document.getElementById('storageBar');
+  if (bar) {
+    bar.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;padding:4px 0;">
+        <span style="font-size:1.6rem;">&#x2601;&#xFE0F;</span>
+        <div style="flex:1;">
+          <div style="font-weight:700;color:var(--maroon-dark);font-size:0.9rem;">MongoDB Cloud Storage &ndash; <span style="color:#27ae60;">Unlimited Images!</span></div>
+          <div style="font-size:0.75rem;color:var(--text-light);margin-top:2px;">Images stored in MongoDB GridFS. No browser storage limits. Upload as many as you want!</div>
+        </div>
+        <span style="background:rgba(39,174,96,0.12);color:#27ae60;padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;white-space:nowrap;">&#x2705; Cloud Connected</span>
+      </div>`;
+  }
+}
+
+// ===== NAVIGATION =====
+function showTab(name, el) {
+  ['overview','upload','designs','bookings','users'].forEach(t => {
+    const tab = document.getElementById('tab-'+t);
+    if(tab) tab.style.display='none';
+  });
+  document.getElementById('tab-'+name).style.display='block';
+  const titles={overview:'Overview',upload:'Add New Design',designs:'Manage Designs',bookings:'Bookings',users:'Customers'};
+  document.getElementById('panelTitle').textContent = titles[name]||'';
+  document.querySelectorAll('.sidebar-nav a').forEach(a=>a.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
+
+// ===== STATS =====
+async function loadStats() {
+  try {
+    const stats = await getStats();
+    document.getElementById('totalDesigns').textContent    = stats.totalDesigns;
+    document.getElementById('totalBookings').textContent   = stats.totalBookings;
+    document.getElementById('pendingBookings').textContent = stats.pendingBookings;
+    document.getElementById('totalUsers').textContent      = stats.totalUsers;
+    const bookings = await getBookings();
+    const recent = [...bookings].slice(0,5);
+    document.getElementById('recentBookings').innerHTML = recent.length ? recent.map(b=>`
+      <tr><td><strong>${b.name}</strong></td><td>${b.service}</td><td>${b.date||'&mdash;'}</td>
+      <td><a href="tel:${b.phone}" style="color:var(--maroon);font-weight:600;">${b.phone}</a></td>
+      <td><span class="badge badge-${b.status}">${b.status}</span></td></tr>`).join('') :
+      '<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-light);">No bookings yet.</td></tr>';
+  } catch(e) { console.error('loadStats error:', e); }
+}
+
+// ===== IMAGE UPLOAD =====
+let uploadedImageFile = null;
+let uploadedImageData = null;
+let editImageFile     = null;
+let editImageData     = null;
+
+function setupDragDrop() {
+  const zone=document.getElementById('uploadZone');
+  if(!zone) return;
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag-over');});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
+  zone.addEventListener('drop',e=>{
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const file=e.dataTransfer.files[0];
+    if(file&&file.type.startsWith('image/')) processImageFile(file,'imgPreview',false);
+  });
+}
+
+function handleImageSelect(e) {
+  const file=e.target.files[0];
+  if(file) processImageFile(file,'imgPreview',false);
+}
+function handleEditImage(e) {
+  const file=e.target.files[0];
+  if(file) processImageFile(file,'eImgPreview',true);
+}
+
+async function processImageFile(file, previewId, isEdit=false) {
+  if(file.size>20*1024*1024){ showToast('Image too large! Max 20MB.','error'); return; }
+  const reader=new FileReader();
+  reader.onload=async(ev)=>{
+    try{
+      showToast('Preparing image...','success');
+      const compressed=await compressImage(ev.target.result,1200,0.82);
+      const kb=Math.round(compressed.length*0.75/1024);
+      if(isEdit){ editImageData=compressed; editImageFile=dataURLtoFile(compressed,'edit.jpg'); }
+      else      { uploadedImageData=compressed; uploadedImageFile=dataURLtoFile(compressed,'upload.jpg'); }
+      const prev=document.getElementById(previewId);
+      prev.src=compressed; prev.style.display='block';
+      showToast('Image ready ('+kb+' KB) - will upload to MongoDB','success');
+    }catch(err){ showToast('Could not process image.','error'); }
+  };
+  reader.readAsDataURL(file);
+}
+
+function showUrlPreview() {
+  const url=document.getElementById('dImageUrl').value;
+  if(url){
+    const p=document.getElementById('imgPreview'); p.src=url; p.style.display='block';
+    uploadedImageData=null; uploadedImageFile=null;
+  }
+}
+
+function resetUploadForm() {
+  document.getElementById('addDesignForm').reset();
+  document.getElementById('dImageUrl').value='';
+  const p=document.getElementById('imgPreview'); p.src=''; p.style.display='none';
+  uploadedImageData=null; uploadedImageFile=null;
+  document.getElementById('imageFileInput').value='';
+}
+
+async function submitNewDesign(e) {
+  e.preventDefault();
+  const btn=e.target.querySelector('button[type="submit"]');
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving to MongoDB...';}
+  try {
+    const urlVal=document.getElementById('dImageUrl').value;
+    const design={
+      name:     document.getElementById('dName').value,
+      category: document.getElementById('dCat').value,
+      price:    parseInt(document.getElementById('dPrice').value),
+      desc:     document.getElementById('dDesc').value,
+      imageUrl: urlVal||'',
+      serial:   document.getElementById('dSerial').value||''
+    };
+    await addDesign(design, uploadedImageFile);
+    showToast('Design saved to MongoDB!','success');
+    resetUploadForm(); await loadStats(); await renderDesignCards(); updateStorageBar();
+  } catch(err){ showToast('Error: '+err.message,'error'); }
+  finally{ if(btn){btn.disabled=false;btn.innerHTML='<i class="fas fa-save"></i> Save Design to Catalog';} }
+}
+
+// ===== DESIGN CARDS =====
+async function renderDesignCards() {
+  const grid=document.getElementById('designManageGrid');
+  const badge=document.getElementById('designCountBadge');
+  if(!grid) return;
+  grid.innerHTML='<p style="color:var(--text-light);padding:20px;text-align:center;"><i class="fas fa-spinner fa-spin"></i> Loading from MongoDB...</p>';
+  try {
+    const designs=await getDesigns();
+    if(badge) badge.textContent='('+designs.length+' total)';
+    grid.innerHTML=designs.length ? designs.map(d=>`
+      <div class="design-manage-card">
+        <span class="design-card-badge">${d.category}</span>
+        <img src="${d.image||'assets/images/bridal_mehndi_1.png'}" alt="${d.name}"
+          onerror="this.src='assets/images/bridal_mehndi_1.png'" loading="lazy" />
+        <div class="design-card-body">
+          <span class="design-card-serial">${d.serial}</span>
+          <div class="design-card-name">${d.name}</div>
+          <div class="price-edit-wrap">
+            <span class="price-display" id="pd-${d.id||d._id}" onclick="startPriceEdit('${d.id||d._id}')" title="Click to edit price">Rs.${Number(d.price).toLocaleString()}</span>
+            <input class="price-input" id="pi-${d.id||d._id}" type="number" value="${d.price}" min="0" />
+            <button class="price-save-btn" id="ps-${d.id||d._id}" onclick="savePriceEdit('${d.id||d._id}')">&#x2713;</button>
+          </div>
+          <div class="design-card-actions">
+            <button class="dca-btn dca-edit" onclick="openEditModal('${d.id||d._id}')"><i class="fas fa-edit"></i> Edit</button>
+            <button class="dca-btn dca-del"  onclick="removeDesign('${d.id||d._id}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      </div>`).join('') : '<p style="color:var(--text-light);padding:30px;text-align:center;">No designs yet. Add your first one!</p>';
+  } catch(e){ grid.innerHTML='<p style="color:#e74c3c;padding:20px;text-align:center;">Could not load designs. Check backend connection.</p>'; }
+}
+
+// ===== INLINE PRICE EDITING =====
+function startPriceEdit(id) {
+  document.getElementById('pd-'+id).style.display='none';
+  const pi=document.getElementById('pi-'+id); pi.style.display='inline-block'; pi.focus();
+  document.getElementById('ps-'+id).style.display='inline-block';
+  pi.onkeydown=e=>{if(e.key==='Enter')savePriceEdit(id);if(e.key==='Escape')cancelPriceEdit(id);};
+}
+async function savePriceEdit(id) {
+  const newPrice=parseInt(document.getElementById('pi-'+id).value);
+  if(isNaN(newPrice)||newPrice<0) return;
+  await updateDesignPrice(id, newPrice);
+  cancelPriceEdit(id);
+  document.getElementById('pd-'+id).textContent='Rs.'+newPrice.toLocaleString();
+  showToast('Price updated to Rs.'+newPrice.toLocaleString(),'success');
+}
+function cancelPriceEdit(id) {
+  document.getElementById('pd-'+id).style.display='';
+  document.getElementById('pi-'+id).style.display='none';
+  document.getElementById('ps-'+id).style.display='none';
+}
+async function removeDesign(id) {
+  if(!confirm('Delete this design from MongoDB?')) return;
+  await deleteDesign(id); await renderDesignCards(); await loadStats(); showToast('Design deleted.');
+}
+
+// ===== EDIT MODAL =====
+async function openEditModal(id) {
+  editImageData=null; editImageFile=null;
+  const designs=await getDesigns();
+  const d=designs.find(x=>String(x.id||x._id)===String(id)); if(!d) return;
+  document.getElementById('eId').value=String(d.id||d._id);
+  document.getElementById('eName').value=d.name;
+  document.getElementById('eCat').value=d.category;
+  document.getElementById('ePrice').value=d.price;
+  document.getElementById('eSerial').value=d.serial||'';
+  document.getElementById('eDesc').value=d.desc||'';
+  document.getElementById('eImageUrl').value=d.imageUrl||'';
+  const prev=document.getElementById('eImgPreview');
+  prev.src=d.image||''; prev.style.display=d.image?'block':'none';
+  document.getElementById('editModal').classList.add('active');
+}
+function closeEditModal(){document.getElementById('editModal').classList.remove('active'); editImageData=null; editImageFile=null;}
+async function saveEditForm(e) {
+  e.preventDefault();
+  const btn=e.target.querySelector('button[type="submit"]');
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving...';}
+  const id=document.getElementById('eId').value;
+  try {
+    await updateDesign(id,{
+      name:     document.getElementById('eName').value,
+      category: document.getElementById('eCat').value,
+      price:    parseInt(document.getElementById('ePrice').value),
+      serial:   document.getElementById('eSerial').value,
+      desc:     document.getElementById('eDesc').value,
+      imageUrl: document.getElementById('eImageUrl').value
+    }, editImageFile);
+    showToast('Design updated!','success');
+    closeEditModal(); await renderDesignCards();
+  } catch(err){ showToast('Error: '+err.message,'error'); }
+  finally{ if(btn){btn.disabled=false;btn.innerHTML='<i class="fas fa-save"></i> Save Changes';} }
+}
+
+// ===== BOOKINGS =====
+async function renderBookings(filter) {
+  const tbody=document.getElementById('bookingsTable'); if(!tbody) return;
+  tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+  let bookings=await getBookings();
+  if(filter!=='all') bookings=bookings.filter(b=>b.status===filter);
+  tbody.innerHTML=bookings.length ? bookings.map(b=>`
+    <tr><td>${b.name}</td><td><a href="tel:${b.phone}">${b.phone}</a></td>
+    <td>${b.service}</td><td>${b.design||'&mdash;'}</td>
+    <td>${b.date||'&mdash;'}<br/><small>${b.time||''}</small></td>
+    <td style="font-size:0.75rem;">${b.address||'&mdash;'}</td>
+    <td><span class="badge badge-${b.status}">${b.status}</span></td>
+    <td><div class="action-btns">
+      ${b.status==='pending'?`<button class="action-btn confirm" onclick="confirmBooking('${b.id||b._id}')" title="Confirm"><i class="fas fa-check"></i></button>`:''}
+      <button class="action-btn delete" onclick="delBooking('${b.id||b._id}')" title="Delete"><i class="fas fa-trash"></i></button>
+    </div></td></tr>`).join('') :
+    '<tr><td colspan="8" style="text-align:center;padding:28px;color:var(--text-light);">No bookings found.</td></tr>';
+}
+function filterBookings(f,el){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active'); renderBookings(f);
+}
+async function confirmBooking(id){await updateBookingStatus(id,'confirmed'); await renderBookings('all'); await loadStats(); showToast('Booking confirmed!','success');}
+async function delBooking(id){if(!confirm('Delete this booking?'))return; await deleteBooking(id); await renderBookings('all'); await loadStats(); showToast('Booking deleted.');}
+
+// ===== USERS =====
+async function renderUsers(){
+  const tbody=document.getElementById('usersTable'); if(!tbody) return;
+  const users=await getUsers();
+  tbody.innerHTML=users.length ? users.map(u=>`
+    <tr><td>${u.name}</td><td>${u.phone}</td>
+    <td>${new Date(u.createdAt).toLocaleDateString('en-IN')}</td></tr>`).join('') :
+    '<tr><td colspan="3" style="text-align:center;padding:28px;color:var(--text-light);">No registered visitors yet.</td></tr>';
+}
+
+function requireAdmin(){
+  const u = getCurrentUser();
+  if (!u || u.role !== 'admin') { window.location.href = 'login.html'; return false; }
+  // Cross-verify session token — prevents direct URL navigation without logging in
+  const storedToken = localStorage.getItem('mma_admin_token');
+  if (!storedToken || storedToken !== u.token) {
+    localStorage.removeItem('mma_user');
+    localStorage.removeItem('mma_admin_token');
+    window.location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+</script>
+</body>
+</html>
